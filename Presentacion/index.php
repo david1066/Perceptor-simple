@@ -1,25 +1,30 @@
 <?php
 
-require '../Controller/Perceptor.php';
+require '../Llogica/perceptorsimple.php';
 $w1=0;
 $w2=0;
 $tetha=0;
 
- $perceptor= new Perceptor();
 
 
 if(isset($_POST['BtnCalcular'])){
-    $w1=$_POST['w1'];
-    $w2=$_POST['w2'];
-    $tetha=$_POST['tetha'];
-    $e=$_POST['e'];
-    echo $perceptor->ValidarRespuesta($w1,$w2,$e,$tetha);
+    $w1=mt_rand(0.1*10, 0.9*10)/10;
+    $w2=mt_rand(0.1*10, 0.9*10)/10;
+    $tetha=mt_rand(0.1*10, 0.9*10)/10;
+   
+    $e=0.1;
 
- /*   if($validar){
+    $perceptor= new PerceptorSimple($w1,$w2,$e,$tetha);
+    $validar= $perceptor->Calcular();
+    
+
+   if($validar){
         echo 'Si se encontro Solución con los Parametros';
         echo 'W1:'.$w1.' W2:'.$w2.' Tetha:'.$tetha.' e:'.$e; 
+    }else{
+        echo 'W1:'.$w1.' W2:'.$w2.' Tetha:'.$tetha.' e:'.$e; 
     }
-    */
+
 
 }
 
