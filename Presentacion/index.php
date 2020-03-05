@@ -1,127 +1,20 @@
-<?php
-
-require '../Llogica/perceptorsimple.php';
-$w1=0;
-$w2=0;
-$tetha=0;
-$and=array();
-
-$w1=0.5;
-$w2=0.2;
-$tetha=0.2;
-$e=0.1;
-$respuesta='';
-
-$perceptor= new PerceptorSimple($w1,$w2,$e,$tetha);
-
-
-if(isset($_POST['BtnAprender'])){
-    //$w1=mt_rand(0.1*10, 0.9*10)/10;
-    //$w2=mt_rand(0.1*10, 0.9*10)/10;
-    //$tetha=mt_rand(0.1*10, 0.9*10)/10;
-    $validar= $perceptor->Aprender();
-
-
-   if($validar){
-
- 
-
-        $display="";
-        $display2="display:none;";
-        
-        echo 'Si se encontro Solución con los Parametros';
-        echo 'W1:'.$perceptor->w1.' W2:'.$perceptor->w2.' Tetha:'.$perceptor->tetha.' e:'.$perceptor->e; 
- 
-      
-    }else{
-        $display2="";
-        $display="display:none;";
-        echo 'No se encontro solucion para W1:'.$w1.' W2:'.$w2.' Tetha:'.$tetha.' e:'.$e; 
-    }
-
-
-}
-
-if(isset($_POST['BtnCalcular'])){
-  $i=0;
-
-  $validar= $perceptor->Aprender();
-
-  $and=$perceptor->andc;
-
- 
- 
-   $nfil=count($and);
-    while ($i < $nfil) {
-      
-        if($and[$i][0]==$_POST['x1'] and  $and[$i][1]==$_POST['x2'] ){
-           $respuesta=$and[$i][2];
-        break;
-         
-        }else{
-          //  echo 'no encontrado';
-        }
-        $i++;
-    }
-
-  
-
-}
-
-?>
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Perceptor Simple</title>
-
+    <title>Document</title>
 </head>
-<body>
+<body class="container text-center">
 
 
-<div class="container " >
+  <h1>Seleccione algun ejercicio</h1>
 
-<form action="index.php" method="POST">
-    <h1 class="text-center">Perceptor Simple</h1>
+    <a class="btn btn-success" href="2Entradas.php">2 Entradas</a>
     <br>
+    <label class="default"> o</label>
     <br>
-<div class="row justify-content-md-center"> 
-
-<div class="row justify-content-md-center">
-<input type="submit" style="<?php echo $display2; ?>" name="BtnAprender" value="Aprender" class="btn btn-success" >
-
-
-<input type="submit"   style="<?php echo $display; ?>" name="BtnCalcular" value="Calcular" class="btn btn-success" >
-
-  
-</div>
-
-<div  class="row justify-content-md-center">
-        <div class="col-sm-2">
-            <input type="text" value="<?=$_POST['x1']?>" name="x1">
-        </div>
-        <div class="col-sm-2">
-            <input type="text" value="<?=$_POST['x2']?>"  name="x2">
-        </div>
-        <div class="col-sm-2">
-            <input type="text"  name="and" value="<?=$respuesta?>">
-        </div>
-        
-
- 
-
- 
-</div>
-
-
-</form>
-
-</div>
-    
+    <a class="btn btn-success" href="4Entradas.php">4 Entradas</a>
 </body>
 </html>
