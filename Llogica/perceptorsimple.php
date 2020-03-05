@@ -3,10 +3,11 @@ require_once '../Ldatos/datafactory.php';
 
 class PerceptorSimple
 {
-    private $w1;
-    private $w2;
-    private $e;
-    private $tetha;
+    public $w1;
+    public $w2;
+    public $andc;
+    public $e;
+    public $tetha;
 
 
 
@@ -18,30 +19,31 @@ class PerceptorSimple
         $this->tetha = $tetha;
     }
 
-    function Calcular()
+    
+    function Aprender()
     {
 
-        $validar = true;
+       
         //conexion base de datos
         $db = new DatabaseFactory();
         $conexion = $db->getDatabase();
         //consulta a la base de datos
-        $query = $conexion->executeQuery('SELECT * FROM Entrenamiento ');
+        $query = $conexion->executeQuery('SELECT x1, x2,Cand FROM Entrenamiento ');
 
-
+        $and = array();
         $iteraciones = 0;
         
-        $and = array();
+    
         while ($entre = $conexion->fetchArray($query)) {
 
             //   $and = array( array( -1,-1, -1 ), array( -1, 1, -1 ), array( 1, -1, -1 ), array( 1, 1, 1 ));
 
             array_push($and, array($entre['x1'], $entre['x2'], $entre['Cand']));
         }
-
+         $and2=array();
+        
        // return var_dump($and);
-
-
+     
         $nfil = count($and);
 
 
@@ -49,37 +51,55 @@ class PerceptorSimple
 
 
         $iteraciones = 0;
+        $validar = true;
+
 
         while ($i < $nfil) {
             $y = 0;
             $j = 0;
          
-        
+        //calculo y
             $y=tanh($this->w1*$and[$i][$j]+$this->w2*$and[$i][$j+1]-($this->tetha));
-          
+            array_push($and2, array($and[$i][$j],$and[$i][$j+1], $y));
             if($y>=$this->tetha){
+                
                 $y=1;
+                array_push($and2, array($and[$i][$j],$and[$i][$j+1], $y));
             }else{
                 $y=-1;
+                array_push($and2, array($and[$i][$j],$and[$i][$j+1], $y));
             }
+            
         
             if($y!=$and[$i][$j+2]){
         
-           
-            $w1=$this->W0($this->w1, $this->e,$y, $and[$i][$j]);
-            $w2=$this->W0($this->w2, $this->e,$y, $and[$i][$j+1]);
-            $tetha=$this->Tetha0($this->tetha,$this->e, $y);
+           //recalculo si es diferente and
+             $and2=array();
+            $this->w1=$this->W0($this->w1, $this->e,$y, $and[$i][$j]);
+            $this->w2=$this->W0($this->w2, $this->e,$y, $and[$i][$j+1]);
+            $this->tetha=$this->Tetha0($this->tetha,$this->e, $y);
         
             $i=0;
+            }else{
+                $i++;
             }
         
             if($iteraciones==1000){
               $validar=false;
+              //rompo el while
             break;
             }
         
 
             $iteraciones++;
+        }
+
+        if($validar){
+          
+            $this->andc=$and2;
+
+         
+
         }
 
         return $validar;

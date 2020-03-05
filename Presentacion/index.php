@@ -4,31 +4,69 @@ require '../Llogica/perceptorsimple.php';
 $w1=0;
 $w2=0;
 $tetha=0;
+$and=array();
+
+$w1=0.5;
+$w2=0.2;
+$tetha=0.2;
+$e=0.1;
+$respuesta='';
+
+$perceptor= new PerceptorSimple($w1,$w2,$e,$tetha);
 
 
+if(isset($_POST['BtnAprender'])){
+    //$w1=mt_rand(0.1*10, 0.9*10)/10;
+    //$w2=mt_rand(0.1*10, 0.9*10)/10;
+    //$tetha=mt_rand(0.1*10, 0.9*10)/10;
+    $validar= $perceptor->Aprender();
 
-if(isset($_POST['BtnCalcular'])){
-    $w1=mt_rand(0.1*10, 0.9*10)/10;
-    $w2=mt_rand(0.1*10, 0.9*10)/10;
-    $tetha=mt_rand(0.1*10, 0.9*10)/10;
-   
-    $e=0.1;
-
-    $perceptor= new PerceptorSimple($w1,$w2,$e,$tetha);
-    $validar= $perceptor->Calcular();
-    
 
    if($validar){
+
+ 
+
+        $display="";
+        $display2="display:none;";
+        
         echo 'Si se encontro Solución con los Parametros';
-        echo 'W1:'.$w1.' W2:'.$w2.' Tetha:'.$tetha.' e:'.$e; 
+        echo 'W1:'.$perceptor->w1.' W2:'.$perceptor->w2.' Tetha:'.$perceptor->tetha.' e:'.$perceptor->e; 
+ 
+      
     }else{
-        echo 'W1:'.$w1.' W2:'.$w2.' Tetha:'.$tetha.' e:'.$e; 
+        $display2="";
+        $display="display:none;";
+        echo 'No se encontro solucion para W1:'.$w1.' W2:'.$w2.' Tetha:'.$tetha.' e:'.$e; 
     }
 
 
 }
 
+if(isset($_POST['BtnCalcular'])){
+  $i=0;
 
+  $validar= $perceptor->Aprender();
+
+  $and=$perceptor->andc;
+
+ 
+ 
+   $nfil=count($and);
+    while ($i < $nfil) {
+      
+        if($and[$i][0]==$_POST['x1'] and  $and[$i][1]==$_POST['x2'] ){
+           $respuesta=$and[$i][2];
+        break;
+         
+        }else{
+          //  echo 'no encontrado';
+        }
+        $i++;
+    }
+
+  
+
+}
 
 ?>
 
@@ -54,40 +92,30 @@ if(isset($_POST['BtnCalcular'])){
     <br>
 <div class="row justify-content-md-center"> 
 
-<label class="col-sm-2 label">W1</label>
-<div class="col-sm-2">
-    <input name="w1" value="<?php if(isset($_POST['w1'])){
-        echo $_POST['w1'];
-    } ?>" type="Text" class="form-control">
-</div>
-<label class="col-sm-2 label">W2</label>
-<div class="col-sm-2">
-    <input  value="<?php if(isset($_POST['w2'])){
-        echo $_POST['w2'];
-    } ?>" name="w2" type="Text" class="form-control">
-</div>
-
-</div>
-<br>
 <div class="row justify-content-md-center">
-<label class="col-sm-2 label">ERROR &theta;</label>
-<div class="col-sm-2">
-    <input name="tetha"  value="<?php if(isset($_POST['tetha'])){
-        echo $_POST['tetha'];
-    } ?>" type="Text" class="form-control">
-</div>
-<label class="col-sm-2 label">Factor de Aprendizaje </label>
-<div class="col-sm-2">
-    <input name="e" value="<?php if(isset($_POST['e'])){
-        echo $_POST['e'];
-    } ?>" type="Text" class="form-control">
-</div>
-</div>
-<br>
-<div class="row justify-content-md-center">
-<input type="submit" name="BtnCalcular" value="Calcular" class="btn btn-success" >
+<input type="submit" style="<?php echo $display2; ?>" name="BtnAprender" value="Aprender" class="btn btn-success" >
 
 
+<input type="submit"   style="<?php echo $display; ?>" name="BtnCalcular" value="Calcular" class="btn btn-success" >
+
+  
+</div>
+
+<div  class="row justify-content-md-center">
+        <div class="col-sm-2">
+            <input type="text" value="<?=$_POST['x1']?>" name="x1">
+        </div>
+        <div class="col-sm-2">
+            <input type="text" value="<?=$_POST['x2']?>"  name="x2">
+        </div>
+        <div class="col-sm-2">
+            <input type="text"  name="and" value="<?=$respuesta?>">
+        </div>
+        
+
+ 
+
+ 
 </div>
 
 
