@@ -82,10 +82,10 @@ if (isset($_POST['BtnCalcular'])) {
             <div class="row justify-content-md-center">
 
                 <div class="row justify-content-md-center">
-                    <input type="submit" style="<?php echo $display2; ?>" name="BtnAprender" value="Aprender" class="btn btn-success">
+                    <input type="submit" styles="<?= $display2; ?>" name="BtnAprender" value="Aprender" class="btn btn-success">
 
 
-                    <input type="submit" style="<?php echo $display; ?>" name="BtnCalcular" value="Calcular" class="btn btn-success">
+                    <input type="submit" styles="<?=$display; ?>" name="BtnCalcular" value="Calcular" class="btn btn-success">
 
 
                 </div>

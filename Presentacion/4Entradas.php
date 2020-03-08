@@ -22,7 +22,7 @@ if (isset($_POST['BtnAprender'])) {
 
     $validar = $perceptor->Aprender();
     $i = 0;
-
+/*
 
     while ($i != 15) {
 
@@ -30,7 +30,7 @@ if (isset($_POST['BtnAprender'])) {
         $i++;
     }
 
-
+*/
 
     if ($validar) {
 
@@ -81,7 +81,7 @@ if (isset($_POST['BtnCalcular'])) {
             <div class="row justify-content-md-center">
 
                 <div class="row justify-content-md-center">
-                    <input type="submit" style="<?php echo $display2; ?>" name="BtnAprender" value="Aprender" class="btn btn-success">
+                    <input type="submit" styles="<?php echo $display2; ?>" name="BtnAprender" value="Aprender" class="btn btn-success">
 
 
                     <input type="submit" name="BtnCalcular" value="Calcular" class="btn btn-success">
