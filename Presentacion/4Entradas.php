@@ -1,25 +1,35 @@
 <?php
 
-require '../Llogica/perceptorsimple.php';
-$w1 = 0;
-$w2 = 0;
-$tetha = 0;
+require '../Llogica/perceptor4entradas.php';
+
 $and = array();
 
-$w1 = 0.5;
-$w2 = 0.2;
-$tetha = 0.2;
-$e = 0.1;
+$w1 = 7.63;
+$w2 = 3.17;
+$w3 = 0.4;
+$w4 = 2.63;
+$tetha = 0.7;
+$e = 0.9;
 $respuesta = '';
 
-$perceptor = new PerceptorSimple($w1, $w2, $e, $tetha);
 
+$perceptor = new Perceptor4($w1, $w2, $w3, $w4, $e, $tetha);
 
 if (isset($_POST['BtnAprender'])) {
     //$w1=mt_rand(0.1*10, 0.9*10)/10;
     //$w2=mt_rand(0.1*10, 0.9*10)/10;
     //$tetha=mt_rand(0.1*10, 0.9*10)/10;
+
     $validar = $perceptor->Aprender();
+    $i = 0;
+
+
+    while ($i != 15) {
+
+        echo 'x1=' . $perceptor->andc[$i][0] . "x2=" . $perceptor->andc[$i][1] . "x3=" . $perceptor->andc[$i][2] . "x4=" . $perceptor->andc[$i][3] . "y=" . $perceptor->andc[$i][5] . "  #=" . $perceptor->andc[$i][6] . "<br>";
+        $i++;
+    }
+
 
 
     if ($validar) {
@@ -30,34 +40,18 @@ if (isset($_POST['BtnAprender'])) {
         $display2 = "display:none;";
 
         echo 'Si se encontro Solución con los Parametros';
-        echo 'W1:' . $perceptor->w1 . ' W2:' . $perceptor->w2 . ' Tetha:' . $perceptor->tetha . ' e:' . $perceptor->e;
+        echo 'W1:' . $perceptor->w1 . ' W2:' . $perceptor->w2 . ' W3:' . $perceptor->w3 . ' W4:' . $perceptor->w4 . '  Tetha:' . $perceptor->tetha . ' e:' . $perceptor->e;
     } else {
-        $display2 = "";
+        $display2 = "display:none;";
         $display = "display:none;";
-        echo 'No se encontro solucion para W1:' . $w1 . ' W2:' . $w2 . ' Tetha:' . $tetha . ' e:' . $e;
+        echo 'No se encontro solucion para W1:' . $w1 . ' W2:' . $w2 . ' W3:' . $w3 . '  W4:' . $w4 . ' Tetha:' . $tetha . ' e:' . $e;
     }
 }
 
 if (isset($_POST['BtnCalcular'])) {
     $i = 0;
 
-    $validar = $perceptor->Aprender();
-
-    $and = $perceptor->andc;
-
-
-
-    $nfil = count($and);
-    while ($i < $nfil) {
-
-        if ($and[$i][0] == $_POST['x1'] and  $and[$i][1] == $_POST['x2']) {
-            $respuesta = $and[$i][2];
-            break;
-        } else {
-            //  echo 'no encontrado';
-        }
-        $i++;
-    }
+    $respuesta = $y = tanh($w1 * $_POST['x1'] + $w2 * $_POST['x2'] + $w3 * $_POST['x3'] + $w4 * $_POST['x4'] - ($tetha));
 }
 
 ?>
@@ -80,7 +74,7 @@ if (isset($_POST['BtnCalcular'])) {
 
     <div class="container ">
 
-        <form action="index.php" method="POST">
+        <form action="4Entradas.php" method="POST">
             <h1 class="text-center">Perceptor Simple</h1>
             <br>
             <br>
@@ -90,7 +84,7 @@ if (isset($_POST['BtnCalcular'])) {
                     <input type="submit" style="<?php echo $display2; ?>" name="BtnAprender" value="Aprender" class="btn btn-success">
 
 
-                    <input type="submit" style="<?php echo $display; ?>" name="BtnCalcular" value="Calcular" class="btn btn-success">
+                    <input type="submit" name="BtnCalcular" value="Calcular" class="btn btn-success">
 
 
                 </div>
@@ -105,6 +99,16 @@ if (isset($_POST['BtnCalcular'])) {
                         <input type="text" value="<?php if (isset($_POST['x2'])) {
                                                         echo $_POST['x2'];
                                                     } ?>" name="x2">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" value="<?php if (isset($_POST['x3'])) {
+                                                        echo $_POST['x3'];
+                                                    } ?>" name="x3">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" value="<?php if (isset($_POST['x4'])) {
+                                                        echo $_POST['x4'];
+                                                    } ?>" name="x4">
                     </div>
                     <div class="col-sm-2">
                         <input type="text" name="and" value="<?= $respuesta ?>">

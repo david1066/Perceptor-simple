@@ -64,10 +64,10 @@ class PerceptorSimple
             if($y>=$this->tetha){
                 
                 $y=1;
-                array_push($and2, array($and[$i][$j],$and[$i][$j+1], $y));
+                
             }else{
                 $y=-1;
-                array_push($and2, array($and[$i][$j],$and[$i][$j+1], $y));
+               
             }
             
         

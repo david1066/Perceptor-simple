@@ -1,15 +1,13 @@
 <?php
 
 require '../Llogica/perceptorsimple.php';
-$w1 = 0;
-$w2 = 0;
-$tetha = 0;
+
 $and = array();
 
 $w1 = 0.5;
 $w2 = 0.2;
-$tetha = 0.2;
-$e = 0.1;
+$tetha = 0.3;
+$e = 0.2;
 $respuesta = '';
 
 $perceptor = new PerceptorSimple($w1, $w2, $e, $tetha);
@@ -46,18 +44,15 @@ if (isset($_POST['BtnCalcular'])) {
     $and = $perceptor->andc;
 
 
+  
+        //if ($and[$i][0] == $_POST['x1'] and  $and[$i][1] == $_POST['x2']) {
+        
 
-    $nfil = count($and);
-    while ($i < $nfil) {
-
-        if ($and[$i][0] == $_POST['x1'] and  $and[$i][1] == $_POST['x2']) {
-            $respuesta = $and[$i][2];
-            break;
-        } else {
-            //  echo 'no encontrado';
-        }
+            $respuesta = $y=tanh($w1* $_POST['x1']+$w2* $_POST['x2']-($tetha));
+            
+       
         $i++;
-    }
+    
 }
 
 ?>
@@ -80,7 +75,7 @@ if (isset($_POST['BtnCalcular'])) {
 
     <div class="container ">
 
-        <form action="index.php" method="POST">
+        <form action="2Entradas.php" method="POST">
             <h1 class="text-center">Perceptor Simple</h1>
             <br>
             <br>
